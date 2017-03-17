@@ -1,5 +1,5 @@
 <?php
-    $con=mysqli_connect("mysql4.gear.host","aea","Xd4Y-2qA!7vr","userdata");
+    $con=mysqli_connect("mysql4.gear.host","aea","Xd4Y-2qA!7vr","aea");
     if(mysqli_connect_errno($con)){
         echo "failed to connect" . mysqli_connect_error();
 	}
