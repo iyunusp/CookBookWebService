@@ -7,6 +7,6 @@
 	$password=$_GET['password'];
 	$realname=$_GET['realname'];
 	$mail=$_GET['mail'];
-    $result=mysqli_query($con,"INSERT INTO usercook(userName,userPassword,userRealname,userMail,userPhone,userAddress) VALUE '$username','$password','$realname','$mail','unknown','unknown'");
+    $result=mysqli_query($con,"INSERT INTO usercook(userName,userPassword,userRealname,userMail,userPhone,userAddress) VALUES '$username','$password','$realname','$mail','unknown','unknown'");
     mysqli_close($con);
 ?>
