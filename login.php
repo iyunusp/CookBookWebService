@@ -5,7 +5,7 @@
 	}
     $username=$_GET['username'];
     $password=$_GET['password'];
-    $result=mysqli_query($con,"SELECT Name from AeA where Name='$username'% and Game='$password'%");
+    $result=mysqli_query($con,"SELECT Name from AeA where Name like '$username'% and Game like '$password'%");
     $row=mysqli_fetch_array($result);
     $data=$row[0];
     if($data){
