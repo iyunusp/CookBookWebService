@@ -9,7 +9,7 @@
     $row=mysqli_fetch_array($result);
     $data=$row[0];
     if($data){
-        echo $row[0]()$row[1]()$row[2]()$row[3]()$row[4];
+        echo $row[0]\\$row[1]\\$row[2]\\$row[3]\\$row[4];
     }
     mysqli_close($con);
 ?>
