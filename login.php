@@ -75,7 +75,7 @@
 				right: 0;
 				margin: auto;
 				border-radius: 8px;
-				border-color: grey;
+				border: 2px grey solid;
 			}
 			.email{
 				top:10px;
@@ -91,13 +91,13 @@
 
 		</style>
 			<center>
-				<font face="calibri" size="20px" style="color:black;" ><b>C</b>ook Book</font>
+				<font face="calibri" size="20px" style="color:white;" ><b>C</b>ook Book</font>
 			</center>
 			<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
 				<center><br>Sign in to start your session
 					<div class="form-group has-feedback email">
 						<input type="text" class="form-control" placeholder="Email" id="txtEmail" name="email" />
-						<b class="glyphicon glyphicon-envelope form-control-feedback"></b>
+						<b class="glyphicon glyphicon-user form-control-feedback"></b>
 					</div>
 					<div class="form-group has-feedback email">
 						<input type="password" class="form-control" placeholder="Password" id="txtPasword" name="password" />
