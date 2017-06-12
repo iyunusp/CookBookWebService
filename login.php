@@ -5,50 +5,47 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=0">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	
 	</head>
 	<body>
-			
+
 		<?php
+		require 'connectDB.php';
 		session_start();
-		define('DB_SERVER', 'mysql4.gear.host');
-  		define('DB_USERNAME', 'usercook');
-   		define('DB_PASSWORD', 'Il5A1Y73~!KQ');
-   		define('DB_DATABASE', 'usercook');
-   $db = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
-		$email = null;
+   		$con = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+		$username = null;
 		if ($_SERVER["REQUEST_METHOD"]=="POST")
 		{
 			$count = 0;
-			if(isset($_POST['email'])&&isset($_POST['password']))
+			if(isset($_POST['username'])&&isset($_POST['password']))
 			{	
-				$email = $_REQUEST['email'];
+				$username = $_REQUEST['username'];
 				$password = $_REQUEST['password'];
-				$sql = "SELECT userName,userRealname,userMail,userPhone,userAddress from usercook where userName like '$email' and userPassword like '$password'";
-				$result = mysqli_query($db,$sql);
+				$sql = "SELECT userName,userRealname,userMail,userPhone,userAddress from usercook where userName like '$username' and userPassword like '$password'";
+				$result = mysqli_query($con,$sql);
 				$count = mysqli_num_rows($result);
 				$role = mysqli_fetch_assoc($result);
 				
 				if($count == 1)
 				{
-					$_SESSION['login_user'] = $email;
+					$_SESSION['login_user'] = $username;
 				}
 				else 
 				{
 					echo'
 					<center><div class="alert alert-danger" id="alert">
 						<strong><center>Login Failed!<br>Username or Password is incorrect </center></strong>
-					</div></center>	';
+					</div></center>';
 				}
 			}
 			else{
-				$email = null;
+				$username = null;
 				$password = null;
 			}
 
 		}
 		?>
+
 		<div id="main" class="container-fluid">
 		<style type="text/css">
 		body{
@@ -96,7 +93,7 @@
 			<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
 				<center><br>Sign in to start your session
 					<div class="form-group has-feedback email">
-						<input type="text" class="form-control" placeholder="Email" id="txtEmail" name="email" />
+						<input type="text" class="form-control" placeholder="Username" id="txtEmail" name="username" />
 						<b class="glyphicon glyphicon-user form-control-feedback"></b>
 					</div>
 					<div class="form-group has-feedback email">

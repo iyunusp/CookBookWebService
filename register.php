@@ -1,5 +1,5 @@
 <?php
-    $con=mysqli_connect("mysql4.gear.host","usercook","Il5A1Y73~!KQ","usercook");
+    require 'connectDB.php';
     if(mysqli_connect_errno($con)){
         echo "failed to connect" . mysqli_connect_error();
 	}
