@@ -32,6 +32,8 @@ function jump(){
 	  isDown=false;
   }
 }
+	
+	
 function checkGameOver(){
   if((playerX+playerWidth/2)>obstacles[0].x 
   && (playerY+playerWidth/2) > obstacles[0].y) {
@@ -101,6 +103,26 @@ function draw(){
 	  speedLevel*=1.125;
   }
   
+}
+function touchStarted(){
+  if(isGameOver && isPause){
+	obstacles.push( new Obstacle(w,h));
+	isGameOver=false;
+	isPause=false;
+	scoreText=0;
+	speedLevel=5;
+	isAI=true;
+  }else{
+    if(isPause){
+      isPause=false;
+    }
+	if(!isJumping && !isDown){
+      isJumping=true;
+	  let distance=obstacles[0].x-(playerX+playerWidth/2);
+	  //console.log(distance);
+	  if(!isAI)dataTrain.push([distance,speedLevel,true]);
+	}
+  }
 }
 function keyPressed(){
   if(isGameOver && isPause && keyCode==32){
