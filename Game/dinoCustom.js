@@ -123,6 +123,7 @@ function touchStarted(){
 	  if(!isAI)dataTrain.push([distance,speedLevel,true]);
 	}
   }
+	return false;		
 }
 function keyPressed(){
   if(isGameOver && isPause && keyCode==32){
