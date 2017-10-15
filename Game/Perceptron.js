@@ -18,7 +18,7 @@ Perceptron.prototype.summer = function(data){//this function receive single data
 	let sum=0;
 	for(let i=0;i<this.inputSize;i++)
 		sum+=(data[i]*this.weight[i]);
-	sum+=this.weight[this.inputSize];
+	sum+=this.weight[this.inputSize];//for bias
 	return sum;
 }
 Perceptron.prototype.normalize =function(num, min,max){//range(0,1)
@@ -27,7 +27,7 @@ Perceptron.prototype.normalize =function(num, min,max){//range(0,1)
 Perceptron.prototype.reAdjustWeight = function(data,targetAnswer){//this function receive single data
 	for(let i=0;i<this.inputSize;i++)
 		this.weight[i]+=(this.learningRate*targetAnswer*data[i]);
-	this.weight[this.inputSize]+=(this.learningRate*targetAnswer);
+	this.weight[this.inputSize]+=(this.learningRate*targetAnswer);//for bias
 }
 Perceptron.prototype.compute= function(data){//this function receive single data
 	for(let i=0;i<this.inputSize;i++){
@@ -55,7 +55,7 @@ Perceptron.prototype.train =function(dataTrain, maxIter){//this function receive
 			let output=false;
 			let summer=this.summer(dataTrain[i]);
 			if(summer>=0) output=true;
-			if(output==dataTrain[i][this.inputSize]) 
+			if(output==dataTrain[i][this.inputSize]) //target and actual are the same
 				correct++;
 			else if(dataTrain[i][this.inputSize])//target is true but actual is false
 				this.reAdjustWeight(dataTrain[i],1);//adaline is not 1
@@ -64,13 +64,12 @@ Perceptron.prototype.train =function(dataTrain, maxIter){//this function receive
 			output=false;
 		}
 		let errRate=((dataTrain.length-correct)/dataTrain.length);
-		this.errHistory.push(errRate);
+		this.errHistory.push(errRate);//push to array for monitoring, delete later
 		this.epoch++;
 		if(correct==dataTrain.length || errRate<=this.maxErr){
 			console.log("succes with "+(this.epoch-1)+"epoch");
 			break;
 		}
 	}
-	this.errHistory.slice(Math.max(this.errHistory.length-50,0));
 	console.log("train finish with "+this.errHistory[this.errHistory.length-1]+"% error rate");
 }
