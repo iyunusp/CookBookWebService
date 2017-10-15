@@ -1,4 +1,4 @@
-let WIDTH = 800, HEIGHT = 300;
+const WIDTH = 800, HEIGHT = 300;
 let w=WIDTH-20,h=HEIGHT-80;
 let canvas;
 let isPause=false, createNew=false, isGameOver=false;
@@ -16,7 +16,7 @@ function setup(){
   canvas=createCanvas(WIDTH, HEIGHT);
   canvas.parent('canvas-here');
   textSize(32);
-  perceptron= new Perceptron();
+  perceptron= new Perceptron(2,0.15,0);
   obstacles.push( new Obstacle(w,h));
 }
 function jump(){
@@ -32,15 +32,13 @@ function jump(){
 	  isDown=false;
   }
 }
-	
-	
 function checkGameOver(){
   if((playerX+playerWidth/2)>obstacles[0].x 
   && (playerY+playerWidth/2) > obstacles[0].y) {
 	isPause=true;
 	isGameOver=true;
 	obstacles=[];
-	if(!isAI)perceptron.train(dataTrain);
+	if(!isAI)perceptron.train(dataTrain,10000);
 	return true;
   }
   else return false;
@@ -61,7 +59,8 @@ function draw(){
   text(scoreText,32,32)
   if(isAI && !isGameOver){
 	let distance=obstacles[0].x-(playerX+playerWidth/2);
-	if(!isJumping && !isDown && perceptron.compute(distance,speedLevel)){
+	let data=[distance,speedLevel]
+	if(!isJumping && !isDown && perceptron.compute(data)){
       isJumping=true;
 	}
   }
@@ -87,7 +86,6 @@ function draw(){
   }
   if(scoreText%(65+floor(random(20)))==0 && (playerY>=playerYDefault)){
 	  let distance=obstacles[0].x-(playerX+playerWidth/2);
-	  //console.log(distance);
 	  if(!isAI)dataTrain.push([distance,speedLevel,false]);
   }
   plotTrain();
@@ -102,7 +100,6 @@ function draw(){
   if(scoreText%speedTreshold==0){
 	  speedLevel*=1.125;
   }
-  
 }
 function touchStarted(){
   if(isGameOver && isPause){
@@ -123,7 +120,7 @@ function touchStarted(){
 	  if(!isAI)dataTrain.push([distance,speedLevel,true]);
 	}
   }
-	return false;		
+  return false;		
 }
 function keyPressed(){
   if(isGameOver && isPause && keyCode==32){
@@ -140,7 +137,6 @@ function keyPressed(){
 	if(!isJumping && !isDown){
       isJumping=true;
 	  let distance=obstacles[0].x-(playerX+playerWidth/2);
-	  //console.log(distance);
 	  if(!isAI)dataTrain.push([distance,speedLevel,true]);
 	}
   }else if(keyCode==40 && !isJumping && !isDown){

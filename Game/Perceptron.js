@@ -1,69 +1,76 @@
-function Perceptron(){
-	this.weight=[random(2)-1,random(2)-1,random(2)-1];//b w1 w2
-	this.output=false;
+function Perceptron(input,learningRate=1,maxErr=0){
+	this.inputSize=input;
+	this.weight=this.initArray(input+1,random(2)-1);//w1..wn b
+	this.learningRate=learningRate;
+	this.maxErr=maxErr;
 	this.epoch=0;
-	this.min1=999;
-	this.max1=0;
-	this.min2=999;
-	this.max2=0;
+	this.min=this.initArray(input,999);
+	this.max=this.initArray(input,0);
 	this.errHistory=[];
 }
-Perceptron.prototype.normalize =function(data, min,max){
-	return (data-min)/(max-min);
+Perceptron.prototype.initArray = function(size,value){
+	let i=0,arr=[];
+	arr.length=size;
+	while(i<size)arr[i++]=value;
+	return arr;
 }
-Perceptron.prototype.compute= function(dist, speed){
-	if(this.max2<speed) this.max2=speed;
-	dist=this.normalize(dist,this.min1,this.max1);
-	speed=this.normalize(speed,this.min2,this.max2);
-	let summer= (1*this.weight[0])+(dist*this.weight[1])+(speed*this.weight[2]);
+Perceptron.prototype.summer = function(data){//this function receive single data
+	let sum=0;
+	for(let i=0;i<this.inputSize;i++)
+		sum+=(data[i]*this.weight[i]);
+	sum+=this.weight[this.inputSize];
+	return sum;
+}
+Perceptron.prototype.normalize =function(num, min,max){//range(0,1)
+	return (num-min)/(max-min);
+}
+Perceptron.prototype.reAdjustWeight = function(data,targetAnswer){//this function receive single data
+	for(let i=0;i<this.inputSize;i++)
+		this.weight[i]+=(this.learningRate*targetAnswer*data[i]);
+	this.weight[this.inputSize]+=(this.learningRate*targetAnswer);
+}
+Perceptron.prototype.compute= function(data){//this function receive single data
+	for(let i=0;i<this.inputSize;i++){
+		if(this.max[i]<data[i])this.max[i]=data[i];
+		data[i]=this.normalize(data[i],this.min[i],this.max[i]);
+	}
+	let summer= this.summer(data);
 	if(summer>=0) return true;
 	else return false;
 }
-Perceptron.prototype.train =function(dataTrain){
+Perceptron.prototype.train =function(dataTrain, maxIter){//this function receive multiple data
 	console.log(dataTrain);
-	//let linecanvas=createCanvas(800,300);
-	//linecanvas.parent('line');
-	//linecanvas.fill(0);
-	//linecanvas.background(255);
-	for(let i=0;i<dataTrain.length;i++){
-		if(dataTrain[i][0]<this.min1)this.min1=dataTrain[i][0];
-		if(dataTrain[i][1]<this.min2)this.min2=dataTrain[i][1];
-		if(dataTrain[i][0]>this.max1)this.max1=dataTrain[i][0];
-		if(dataTrain[i][1]>this.max2)this.max2=dataTrain[i][1];
+	for(let i=0;i<dataTrain.length;i++){//assign the min and max value
+		for(let j=0;j<this.inputSize;j++){
+			if(dataTrain[i][j]<this.min[j])this.min[j]=dataTrain[i][j];
+			if(dataTrain[i][j]>this.max[j])this.max[j]=dataTrain[i][j];
+		}
 	}
-	for(let i=0;i<dataTrain.length;i++){
-		dataTrain[i][0]=this.normalize(dataTrain[i][0],this.min1,this.max1);
-		dataTrain[i][1]=this.normalize(dataTrain[i][1],this.min2,this.max2);
-	}
-	for(let iter=0;iter<20*dataTrain.length;iter++){
+	for(let i=0;i<dataTrain.length;i++)
+		for(let j=0;j<this.inputSize;j++)
+			dataTrain[i][j]=this.normalize(dataTrain[i][j],this.min[j],this.max[j]);
+	for(let iter=0;iter<maxIter;iter++){
 		let correct=0;
 		for(let i=0; i<dataTrain.length;i++){
-			let summer=(1*this.weight[0])+(dataTrain[i][0]*this.weight[1])+(dataTrain[i][1]*this.weight[2]);
-			if(summer>=0) this.output=true;
-			if(this.output==dataTrain[i][2]){
+			let output=false;
+			let summer=this.summer(dataTrain[i]);
+			if(summer>=0) output=true;
+			if(output==dataTrain[i][this.inputSize]) 
 				correct++;
-			}else if(dataTrain[i][2]){
-				this.weight=[this.weight[0]+1,
-							this.weight[1]+dataTrain[i][0],
-							this.weight[2]+dataTrain[i][1]];
-			}else if(this.output){
-				this.weight=[this.weight[0]-1,
-							this.weight[1]-dataTrain[i][0],
-							this.weight[2]-dataTrain[i][1]];
-			}
-			//fill(0);
-			//linecanvas.line(0,300*(this.weight[0]/this.weight[2]),800*(this.weight[0]/this.weight[1],0));
-			this.output=false;
+			else if(dataTrain[i][this.inputSize])//target is true but actual is false
+				this.reAdjustWeight(dataTrain[i],1);//adaline is not 1
+			else if(output)//target is false but actual is true
+				this.reAdjustWeight(dataTrain[i],-1);//adaline is not 1
+			output=false;
 		}
 		let errRate=((dataTrain.length-correct)/dataTrain.length);
 		this.errHistory.push(errRate);
-		if(correct==dataTrain.length /*|| errRate<=0.005*/){
+		this.epoch++;
+		if(correct==dataTrain.length || errRate<=this.maxErr){
 			console.log("succes with "+(this.epoch-1)+"epoch");
 			break;
 		}
-		this.epoch++;
 	}
-	console.log("current value "+(this.epoch-1)+"epoch");
-	console.log(this.errHistory);
-	//console.log(this.weight)
+	this.errHistory.slice(Math.max(this.errHistory.length-50,0));
+	console.log("train finish with "+this.errHistory[this.errHistory.length-1]+"% error rate");
 }
