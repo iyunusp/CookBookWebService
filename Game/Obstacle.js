@@ -5,15 +5,9 @@ function Obstacle(x, y) {
   this.h = 80;
   this.canSpawn=true;
 }
-
 Obstacle.prototype.show = function() {
   stroke(0);
   noFill();
-  if(this.x>0){
-	rect(this.x, this.y, this.w, this.h);
-  }
+  rect(this.x, this.y, this.w, this.h);
 }
-Obstacle.prototype.move = function(speed) {
-  this.x-=speed;
-}
-
+Obstacle.prototype.move = function(speed) {this.x-=speed;}
