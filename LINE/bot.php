@@ -6,7 +6,7 @@ define('DB_PASSWORD', 'Il5A1Y73~!KQ');
 define('DB_DATABASE', 'usercook');
 $con = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
 if(mysqli_connect_errno($con)){
-    //do nothing
+    echo "failed to connect" . mysqli_connect_error();
 }else{
 	$channelAccessToken='cbP7RlVv3AHKhn+b93bYzr6gMqcf+NGhPJ1FNol61l9eXPJVGeY3EIpGnQjHoDg4UjaxFV6iDIqX4otRmzNMUFEjnJ5MFktwQ8GrHVEEMM15HBInR9jA0zSpVYzdMDCAP6Vt8BbjW4q5g2XHLOaLoQdB04t89/1O/w1cDnyilFU=';
 	$channelSecret='8ad8fdee2b1dd25090e7b3974e63705c';
@@ -37,6 +37,16 @@ if(mysqli_connect_errno($con)){
 								)
 							));
 							
+						}else{
+							$client->replyMessage(array(
+								'replyToken' => $event['replyToken'],
+								'messages' => array(
+									array(
+										'type' => 'text',
+										'text' => 'wrong keyword'
+									)
+								)
+							));
 						}
 						break;
 					default:
