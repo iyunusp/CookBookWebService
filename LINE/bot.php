@@ -32,7 +32,7 @@ foreach ($client->parseEvents() as $event) {
 						$result=mysqli_query($con,"SELECT Name, Price from games where Name like '%$clientText%'");
 						$clientText='';
 						for($i=1;$row=mysqli_fetch_array($result);$i++){
-							$clientText .= $i . "\t" . $row[0] . "\t" . $row[1] . "\r\n";
+							$clientText .= $i . '    ' . $row[0] . '    ' . $row[1] . "\r\n";
 						}
 						if($clientText==''){
 							$client->replyMessage(array(
