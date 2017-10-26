@@ -31,12 +31,13 @@ foreach ($client->parseEvents() as $event) {
 						$clientText=substr($clientText,strlen($prefix));
 						$result=mysqli_query($con,"SELECT Name, Price from games where Name like '%$clientText%'");
 						$clientText='';
-						for($i=1;$row=mysqli_fetch_array($result);$i++){
+						$i=1;
+						while($row=mysqli_fetch_array($result)){
 							if($i==1){
-								$clientText .= sprintf("%-2s %-25s %-7s \r\n",'No' , 'Name' , 'Price');
-							}
-							$clientText .= sprintf("%2d %-25s %-7d\r\n",$i , $row[0] , $row[1]);
-							if($i==5)break;
+								$clientText .= sprintf("%-2s %-40s %-7s \r\n",'No' , 'Name' , 'Price');
+							}else if($i==6)break;
+							$clientText .= sprintf("%2d %-40s %-7d\r\n",$i , $row[0] , $row[1]);
+							$i++;
 						}
 						if($clientText==''){
 							$client->replyMessage(array(
