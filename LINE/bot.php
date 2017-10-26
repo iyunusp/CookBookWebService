@@ -5,13 +5,21 @@ define('DB_USERNAME', 'usercook');
 define('DB_PASSWORD', 'Il5A1Y73~!KQ');
 define('DB_DATABASE', 'usercook');
 $con = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
+$channelAccessToken='cbP7RlVv3AHKhn+b93bYzr6gMqcf+NGhPJ1FNol61l9eXPJVGeY3EIpGnQjHoDg4UjaxFV6iDIqX4otRmzNMUFEjnJ5MFktwQ8GrHVEEMM15HBInR9jA0zSpVYzdMDCAP6Vt8BbjW4q5g2XHLOaLoQdB04t89/1O/w1cDnyilFU=';
+$channelSecret='8ad8fdee2b1dd25090e7b3974e63705c';
+$client=new LINEBotTiny($channelAccessToken,$channelSecret);
+$prefix = 'Search ';
 if(mysqli_connect_errno($con)){
-    echo "failed to connect" . mysqli_connect_error();
+    $client->replyMessage(array(
+		'replyToken' => $event['replyToken'],
+		'messages' => array(
+			array(
+				'type' => 'text',
+				'text' => 'Connection Failed'
+			)
+		)
+	));
 }else{
-	$channelAccessToken='cbP7RlVv3AHKhn+b93bYzr6gMqcf+NGhPJ1FNol61l9eXPJVGeY3EIpGnQjHoDg4UjaxFV6iDIqX4otRmzNMUFEjnJ5MFktwQ8GrHVEEMM15HBInR9jA0zSpVYzdMDCAP6Vt8BbjW4q5g2XHLOaLoQdB04t89/1O/w1cDnyilFU=';
-	$channelSecret='8ad8fdee2b1dd25090e7b3974e63705c';
-	$client=new LINEBotTiny($channelAccessToken,$channelSecret);
-	$prefix = 'Search ';
 	foreach ($client->parseEvents() as $event) {
 		switch ($event['type']) {
 			case 'message':
@@ -24,7 +32,7 @@ if(mysqli_connect_errno($con)){
 							$result=mysqli_query($con,"SELECT Name, Price from games where Name like '%$clientText%'");
 							$clientText='';
 							for($i=1;$row=mysqli_fetch_array($result);$i++){
-								$clientText .= $i . " \t " . $row[0] . " \t " . $row[1] . "\r\n";
+								$clientText .= $i . "\t" . $row[0] . "\t" . $row[1] . "\r\n";
 							}
 							if($clientText==''){
 								$client->replyMessage(array(
@@ -32,7 +40,7 @@ if(mysqli_connect_errno($con)){
 									'messages' => array(
 										array(
 											'type' => 'text',
-											'text' =>  'No Game'
+											'text' =>  'Game not Found'
 										)
 									)
 								));
