@@ -34,9 +34,9 @@ foreach ($client->parseEvents() as $event) {
 						$i=1;
 						while($row=mysqli_fetch_array($result)){
 							if($i==1){
-								$clientText .= sprintf("%-2s %-40s %-7s \r\n",'No' , 'Name' , 'Price');
+								$clientText .= sprintf("%-2s %-28s %-7s \r\n",'No' , 'Name' , 'Price');
 							}else if($i==6)break;
-							$clientText .= sprintf("%2d %-40s %-7d\r\n",$i , $row[0] , $row[1]);
+							$clientText .= sprintf("%2d %-28s \$%-7d\r\n",$i , $row[0] , $row[1]);
 							$i++;
 						}
 						if($clientText==''){
