@@ -26,16 +26,27 @@ if(mysqli_connect_errno($con)){
 							for($i=1;$row=mysqli_fetch_array($result);$i++){
 								$clientText .= $i . $row[0] . $row[1] . "\r\n";
 							}
-							if($clientText=='')
-							$client->replyMessage(array(
-								'replyToken' => $event['replyToken'],
-								'messages' => array(
-									array(
-										'type' => 'text',
-										'text' => $clientText
+							if($clientText==''){
+								$client->replyMessage(array(
+									'replyToken' => $event['replyToken'],
+									'messages' => array(
+										array(
+											'type' => 'text',
+											'text' => $clientText
+										)
 									)
-								)
-							));
+								));
+							}else{
+								$client->replyMessage(array(
+									'replyToken' => $event['replyToken'],
+									'messages' => array(
+										array(
+											'type' => 'text',
+											'text' => 'No Game'
+										)
+									)
+								));
+							}
 							
 						}else{
 							$client->replyMessage(array(
