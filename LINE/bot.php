@@ -24,7 +24,10 @@ if(mysqli_connect_errno($con)){
 							$result=mysqli_query($con,"SELECT Name, Price from games where Name like '%$clientText%'");
 							$clientText='';
 							for($i=1;$row=mysqli_fetch_array($result);$i++){
-								$clientText .= $i . $row[0] . $row[1] . "\r\n";
+								if($i==1){
+									$clientText .= sprintf("%-2d %-30s %-7s \r\n"$i , 'Name' , 'Price');
+								}
+								$clientText .= sprintf("%2d %-30s %-7d\r\n"$i , $row[0] , $row[1]);
 							}
 							if($clientText==''){
 								$client->replyMessage(array(
