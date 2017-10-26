@@ -31,7 +31,7 @@ foreach ($client->parseEvents() as $event) {
 						$clientText=substr($clientText,strlen($prefix));
 						$result=mysqli_query($con,"SELECT Name, Price from games where Name like '%$clientText%'");
 						$clientText='';
-						for($i=1;$row=mysqli_fetch_array($result);$i++){
+						for($i=1;$row=mysqli_fetch_array($result) && $i<=5;$i++){
 							if($i==1){
 								$clientText .= sprintf("%-2s %-25s %-7s \r\n",'No' , 'Name' , 'Price');
 							}
