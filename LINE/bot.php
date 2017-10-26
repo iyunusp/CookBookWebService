@@ -32,7 +32,7 @@ if(mysqli_connect_errno($con)){
 									'messages' => array(
 										array(
 											'type' => 'text',
-											'text' => $clientText
+											'text' =>  'No Game'
 										)
 									)
 								));
@@ -42,7 +42,7 @@ if(mysqli_connect_errno($con)){
 									'messages' => array(
 										array(
 											'type' => 'text',
-											'text' => 'No Game'
+											'text' => $clientText
 										)
 									)
 								));
