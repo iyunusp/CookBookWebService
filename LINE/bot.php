@@ -5,7 +5,7 @@ define('DB_USERNAME', 'usercook');
 define('DB_PASSWORD', 'Il5A1Y73~!KQ');
 define('DB_DATABASE', 'usercook');
 $con = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
-$channelAccessToken='cbP7RlVv3AHKhn+b93bYzr6gMqcf+NGhPJ1FNol61l9eXPJVGeY3EIpGnQjHoDg4UjaxFV6iDIqX4otRmzNMUFEjnJ5MFktwQ8GrHVEEMM15HBInR9jA0zSpVYzdMDCAP6Vt8BbjW4q5g2XHLOaLoQdB04t89/1O/w1cDnyilFU=';
+$channelAccessToken='Q6jl5XqXu7CvC7QjSNlv8Tg1Xta6xm4byTGaPhhNOAAuObu6z+WunJogZS+kHIljUjaxFV6iDIqX4otRmzNMUFEjnJ5MFktwQ8GrHVEEMM0yYNpIvKvIJ26wwJhmHuEdZzP66Be4++I2II3jLwEUlQdB04t89/1O/w1cDnyilFU=';
 $channelSecret='8ad8fdee2b1dd25090e7b3974e63705c';
 $client=new LINEBotTiny($channelAccessToken,$channelSecret);
 $prefix = 'Search ';
