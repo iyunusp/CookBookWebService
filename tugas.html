@@ -232,10 +232,10 @@ var vm = new Vue({
 <ol start="5">
 	<li>contoh sederhana</li>
 </ol>
-<p>Pada contoh ini saya membuat implementasi vue berdasarkan dari contoh two way data-binding. Disini saya menggunakan ternary operation untuk mengecek apakah kata tersebut anagram atau tidak.</p>
+<p>Pada contoh ini saya membuat implementasi vue berdasarkan dari contoh two way data-binding. Disini saya menggunakan ternary operation untuk mengecek apakah kata tersebut Palindrom atau tidak.</p>
 <p><textarea readonly rows="20">
 <div id="s">
-	<input type="text" v-model="message" style="margin-right: 25px;">{{checkAnagram(message) ? "it's Anagram" : "it isn't Anagram"}}
+	<input type="text" v-model="message" style="margin-right: 25px;">{{checkAnagram(message) ? "it's Palindrome" : "it isn't Palindrome"}}
 </div>
 let app=new Vue({
 	el:"#s",
@@ -252,7 +252,7 @@ let app=new Vue({
 });
 </textarea>
 <div id="s" class="vue">
-	<input type="text" v-model="message" style="margin-right: 25px;">{{checkAnagram(message) ? "it's Anagram" : "it isn't Anagram"}}
+	<input type="text" v-model="message" style="margin-right: 25px;">{{checkAnagram(message) ? "it's Palindrome" : "it isn't Palindrome"}}
 </div>
 </p>
 <p>&nbsp;</p>
