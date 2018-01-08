@@ -5,19 +5,28 @@ let isPause=false, createNew=false, isGameOver=false;
 let obstacles=[];
 let isJumping=false, isDown=false;
 let speedLevel=5;
-let playerY=HEIGHT-40;
+const playerWidth=50;
+let playerY=HEIGHT-playerWidth;
 const speedTreshold=500,speedRate=1.125;
-const playerX=40,playerYDefault=playerY,playerJumpStrength=6, playerWidth=30;
+const playerX=40,playerYDefault=playerY,playerJumpStrength=6;
+const img=[];
 let scoreText=0,humanScore=0;
 let dataTrain=[];
 let perceptron;
 let isAI=false;
+let imgS=true;
+let imgC=0;
 function setup(){
   canvas=createCanvas(WIDTH, HEIGHT);
   canvas.parent('canvas-here');
   textSize(32);
   perceptron= new Perceptron(3,0.15,0);
   obstacles.push( new Obstacle(w,h));
+  img1=loadImage("Game/dino1.png");
+  img2=loadImage("Game/dino2.png");
+  
+  img.push(img1);
+  img.push(img2);
 }
 function jump(){
   if(isJumping) playerY-=playerJumpStrength;
@@ -66,7 +75,8 @@ function draw(){
   }
   jump();
   if(checkGameOver())return;
-  ellipse(playerX , playerY, playerWidth);//player
+  image(img[imgS ? 0:1],playerX , playerY);//player
+  if((imgC++)%20==0)imgS=!imgS;
   for(var i=0;i<obstacles.length;i++){ 
     obstacles[i].show();
     if(!isPause && obstacles[i].x>0) obstacles[i].move(speedLevel);
@@ -113,7 +123,7 @@ function keyPressed(){
       isJumping=true;
       if(!isAI)dataTrain.push([getDistance(0),speedLevel,obstacles[0].w,true]);
     }
-  }else if(keyCode==40 && !isJumping && !isDown) playerY=HEIGHT-20;
+  }else if(keyCode==40 && !isJumping && !isDown) playerY=HEIGHT-25;
 }
-function keyReleased(){ if(keyCode==40 && !isJumping && !isDown) playerY=HEIGHT-40;}
+function keyReleased(){ if(keyCode==40 && !isJumping && !isDown) playerY=HEIGHT-50;}
 window.onresize = function () {isPause=true};
